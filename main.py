@@ -22,19 +22,20 @@ from google.appengine.api import mail
 
 from controllers.TaskHandler import TaskHandler
 from controllers.LoginHandler import LoginHandler
+from controllers.ProfileHandler import ProfileHandler
 
 
 class MainHandler(webapp2.RequestHandler):
   def get(self):
-      user = users.get_current_user()
-
-      if user:
-        self.redirect('/task')
-      else:
-          self.redirect('/login')
+    user = users.get_current_user()
+    if user:
+      self.redirect('/task')
+    else:
+      self.redirect('/login')
 
 app = webapp2.WSGIApplication([
     webapp2.Route(r'/task', TaskHandler),
     webapp2.Route(r'/login', LoginHandler),
+    webapp2.Route(r'/profile', ProfileHandler),
     webapp2.Route(r'/', MainHandler)
   ], debug=True)
