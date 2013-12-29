@@ -15,24 +15,26 @@
 # limitations under the License.
 #
 import webapp2
+
 from google.appengine.api import users
+from google.appengine.ext.webapp import template
 from google.appengine.api import mail
+
+from controllers.TaskHandler import TaskHandler
+from controllers.LoginHandler import LoginHandler
+
 
 class MainHandler(webapp2.RequestHandler):
   def get(self):
       user = users.get_current_user()
 
       if user:
-          self.redirect(TaskHandler)
-          #Asociar a cada User
+        self.redirect('/task')
       else:
-          self.redirect(users.create_login_url(self.request.uri))
-
-class TaskHandler(webapp2.RequestHandler):
-  def get(self):
-    self.response.out.write("HELLO")
+          self.redirect('/login')
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler),
-    ('/main', TaskHandler)
+    webapp2.Route(r'/task', TaskHandler),
+    webapp2.Route(r'/login', LoginHandler),
+    webapp2.Route(r'/', MainHandler)
   ], debug=True)

@@ -12,6 +12,10 @@ handlers:
 - url: /assets
   static_dir: assets
 
+- url: /login
+  script: main.app
+  secure: always
+
 - url: .*
   script: main.app
 
