@@ -1,0 +1,28 @@
+<p><a href="{{logout_url}}">Logout</a></p>
+<p>EYYY</p>
+<div>
+  <p>HOLA</p>
+  {% for user in users %}
+    {{user.uid}} <br/>
+    {{user.first_name}} <br/>
+    {{user.last_name}} <br/>
+    {{user.email}} <br/>
+    {{user.validated}} <br/>
+    {{user.date}} <br/>
+  {% endfor %}
+</div><br>
+<div>
+  {% for task in tasks %}
+    by {{current.email}} <br/>
+    task: {{task.content}} <br/>
+  {% endfor %}
+</div>
+
+
+ <form name="task" action="/" method="post" accept-charset="utf-8"
+      onsubmit="return validateForm()">
+  * Content:&nbsp;<input type="text" name="content" value="{{task.content}}" /></br>
+  * Author:&nbsp;<input type="text" name="author" value={% ifequal task.author none %} {{current.email}} {% else %} {{task.author}} {% endifequal %} /></br>
+  </select>
+  <input type = "submit" value ="Save">
+</form>
