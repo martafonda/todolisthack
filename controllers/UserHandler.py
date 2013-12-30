@@ -1,24 +1,46 @@
 #Libraries
 import webapp2
 from google.appengine.api import users
-#Views
-from views.login_view import login_view
+from google.appengine.ext import db
+
+from models.User import User
 
 class UserHandler(webapp2.RequestHandler):
   def get(self):
     self.response.out.write("HELLO")
 
-#CRUD
-class CreateUser(webapp2.RequestHandler):
-  def post(self):
-    user = User(first_name = self.request.get('first_name'),
-    last_name = self.request.get('last_name'),
-    email = self.request.get('first_name'),
-    validated = self.request.get('first_name'))
+class UserCrud(webapp2.RequestHandler):
+  def __init__(self, cid):
+        self.cid = cid
 
-class ShowUser(webapp2.RequestHandler):
+  def show_user(self):
+        return db.GqlQuery('SELECT * FROM User WHERE uid = :1',
+                           self.cid).get()
 
-class EditUser(webapp2.RequestHandler):
+  def update_user(self, first_name, last_name, email):
+        #  Validate the input
+        if first_name == None or "":
+            return("first_name")
+        elif last_name == None or "":
+            return("last_name")
 
-class DestroyUser(webapp2.RequestHandler):
+        user = db.GqlQuery('SELECT * FROM User WHERE uid = :1',
+                              self.cid).get()
+        if not user:
+            new_user = User(uid=self.cid,
+                              first_name=first_name,
+                              last_name=last_name,
+                              email=email,
+                              validated=False)
+            new_user.put()
+        else:
+            setattr(user, "first_name", first_name)
+            setattr(user, "last_name", last_name)
+            setattr(user, "email", email)
+            user.put()
+        return("OK")
 
+  def delete_user(self):
+        user = db.GqlQuery('SELECT * FROM User WHERE uid = :1',
+                              self.cid).get()
+        db.delete(user)
