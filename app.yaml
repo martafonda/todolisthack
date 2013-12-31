@@ -1,8 +1,8 @@
 application: todolisthack
-version: 1
+version: 2
 runtime: python27
 api_version: 1
-threadsafe: yes
+threadsafe: true
 
 handlers:
 - url: /assets/img/favicon\.ico

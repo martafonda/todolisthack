@@ -1,22 +1,18 @@
-<p><a href="{{logout_url}}">Logout</a></p>
-<hr>
-<div>
-  <h3>USUARIOS</h3>
-  {% for user in users %}
-    {{user.uid}} <br/>
-    {{user.first_name}} <br/>
-    {{user.last_name}} <br/>
-    {{user.email}} <br/>
-    {{user.validated}} <br/>
-    {{user.date}} <br/><br/><br/>
-  {% endfor %}
-</div><br>
-<div>
-  <h4>TASK FOR THE USER</h4>
-  {% for task in tasks %}
-    by {{task.author}} <br/>
-    task: {{task.content}} <br/><br/><br/>
-  {% endfor %}
-</div>
+<section>
+  <p>Welcome to your board {{user.email}}</p>
+  <p><a href="{{logout_url}}">Logout</a></p>
+</section>
+<section>
+  <article>
+    <h2>BOARD</h2>
+    {% for task in tasks %}
+      by {{task.author}} <br/>
+      task: {{task.content}} <br/>
+      <a href="/delete_task">Delete Task</a><br/><br/>
+    {% endfor %}
+  </article>
 
-<div><a href="/new_task">New Task</a></div>
+  <nav>
+    <a href="/new_task">New Task</a>
+  </nav>
+</section>
