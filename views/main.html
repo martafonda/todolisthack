@@ -14,7 +14,7 @@
 <div>
   <h4>TASK FOR THE USER</h4>
   {% for task in tasks %}
-    by {{current.email}} <br/>
+    by {{task.author}} <br/>
     task: {{task.content}} <br/><br/><br/>
   {% endfor %}
 </div>
