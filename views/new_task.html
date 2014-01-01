@@ -1,6 +1,7 @@
 <form name="new_task" action="/task" method="post" accept-charset="utf-8"
       onsubmit="return validateForm()">
-  * Content:&nbsp;<input type="text" name="content" value="{{task.content}}" /></br>
+  * Title:&nbsp;<input type="text" name="title" value="{{task.title}}" /></br>
+  * Description:&nbsp;<input type="text" name="description" value="{{task.description}}" /></br>
   * Author:&nbsp;<input type="text" name="author" value={% ifequal task.author none %} {{user.email}} {% else %} {{task.author}} {% endifequal %} /></br>
   <input type = "submit" value ="Save">
 </form>

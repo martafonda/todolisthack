@@ -20,7 +20,8 @@ class TaskHandler(webapp2.RequestHandler):
   
   def post(self):
     task = Task(author=self.request.get('author'),
-                content = self.request.get('content'))
+                title=self.request.get('title'),
+                description = self.request.get('description'))
     task.put()
     self.redirect('/')
 class TaskCrud(webapp2.RequestHandler):
@@ -31,18 +32,20 @@ class TaskCrud(webapp2.RequestHandler):
         return db.GqlQuery('SELECT * FROM Task WHERE tid = :1',
                            self.cid).get()
 
-  def update_task(self, author, content):
+  def update_task(self, author, description):
 
         task = db.GqlQuery('SELECT * FROM Task WHERE tid = :1',
                               self.cid).get()
         if not task:
             new_task = Task(tid=self.cid,
                             author=author,
-                            content=content)
+                            title=title,
+                            description=description)
             new_task.put()
         else:
             setattr(task, "author", author)
-            setattr(task, "content", content)
+            setattr(task, "title", title)
+            setattr(task, "description", description)
             task.put()
         return("OK")
 

@@ -7,7 +7,8 @@
     <h2>BOARD</h2>
     {% for task in tasks %}
       by {{task.author}} <br/>
-      task: {{task.content}} <br/>
+      title: {{task.title}} <br/>
+      task: {{task.description}} <br/>
       <a href="/delete_task">Delete Task</a><br/><br/>
     {% endfor %}
   </article>
