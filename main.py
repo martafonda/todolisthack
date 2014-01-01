@@ -20,12 +20,11 @@ from google.appengine.api import users
 from google.appengine.ext.webapp import template
 from google.appengine.api import mail
 
-from controllers.TaskHandler import TaskHandler
 from controllers.LoginHandler import LoginHandler
 from controllers.ProfileHandler import ProfileHandler
 from controllers.SignUpHandler import SignUpHandler
 from controllers.NewTaskHandler import NewTaskHandler
-from controllers.TaskHandler import TaskCrud
+from controllers.TaskHandler import TaskCrud, TaskHandler
 from controllers.DeleteTaskHandler import DeleteTaskHandler
 
 
