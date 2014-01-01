@@ -22,7 +22,7 @@ class ProfileHandler(webapp2.RequestHandler):
         uid = user.user_id()
         crud = UserCrud(uid)
 
-        is_valid = crud.update_user(first_name=self.request.get('first_name'),
+        qry = crud.update_user(first_name=self.request.get('first_name'),
                             last_name=self.request.get('last_name'),
                             email=self.request.get('email'))
 

@@ -1,6 +1,12 @@
 <section>
   <p>Welcome to your board {{user.email}}</p>
   <p><a href="{{logout_url}}">Logout</a></p>
+  <h3>SEARCH BOX</h3>
+  <form name="searchbox" action="/search" method="post" accept-charset="utf-8"
+      onsubmit="return validateForm()">
+    <input type="text" name="search"/></br>
+    <input type = "submit" value ="Search">
+  </form>
 </section>
 <section>
   <article>

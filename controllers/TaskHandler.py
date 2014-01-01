@@ -24,6 +24,7 @@ class TaskHandler(webapp2.RequestHandler):
                 description = self.request.get('description'))
     task.put()
     self.redirect('/')
+    
 class TaskCrud(webapp2.RequestHandler):
   def __init__(self, cid):
         self.cid = cid

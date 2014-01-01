@@ -14,3 +14,8 @@ indexes:
   properties:
   - name: author
   - name: date
+
+- kind: Task
+  properties:
+  - name: title
+  - name: date

@@ -22,6 +22,7 @@ from google.appengine.api import mail
 
 from controllers.LoginHandler import LoginHandler
 from controllers.ProfileHandler import ProfileHandler
+from controllers.SearchHandler import SearchHandler
 from controllers.SignUpHandler import SignUpHandler
 from controllers.NewTaskHandler import NewTaskHandler
 from controllers.TaskHandler import TaskCrud, TaskHandler
@@ -40,6 +41,7 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/task', TaskHandler),
     webapp2.Route(r'/new_task', NewTaskHandler),
     webapp2.Route(r'/delete_task', DeleteTaskHandler),
+    webapp2.Route(r'/search', SearchHandler),
     webapp2.Route(r'/login', LoginHandler, name = 'login'),
     webapp2.Route(r'/sign_up', SignUpHandler),
     webapp2.Route(r'/profile', ProfileHandler),
