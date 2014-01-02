@@ -19,10 +19,13 @@ class TaskHandler(webapp2.RequestHandler):
     self.response.out.write(template.render('views/main.html', values))
   
   def post(self):
-    task = Task(author=self.request.get('author'),
+    tid = self.request.get('tid')
+    crud = TaskCrud(tid)
+
+    qry = crud.update_task(author=self.request.get('author'),
                 title=self.request.get('title'),
                 description = self.request.get('description'))
-    task.put()
+
     self.redirect('/')
     
 class TaskCrud(webapp2.RequestHandler):
@@ -33,7 +36,7 @@ class TaskCrud(webapp2.RequestHandler):
         return db.GqlQuery('SELECT * FROM Task WHERE tid = :1',
                            self.cid).get()
 
-  def update_task(self, author, description):
+  def update_task(self, author, title, description):
 
         task = db.GqlQuery('SELECT * FROM Task WHERE tid = :1',
                               self.cid).get()

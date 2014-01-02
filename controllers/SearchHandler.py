@@ -11,19 +11,15 @@ class SearchHandler(webapp2.RequestHandler):
     user_list = db.GqlQuery( 'SELECT * FROM User')
     current_user = users.get_current_user()
     word=self.request.get('search')
-    task_list = db.GqlQuery('SELECT * FROM Task WHERE title = :1 ORDER BY date', word)
+    qtitle = db.GqlQuery('SELECT * FROM Task WHERE title = :1 ORDER BY date', word)
+    task_list_title = list(qtitle)
+    qdescription = db.GqlQuery('SELECT * FROM Task WHERE description = :1 ORDER BY date', word)
+    task_list_description = list(qdescription)
+    task_list = task_list_title + task_list_description
+
     values = {'task' : user_list, 
               'logout_url': users.create_logout_url("/"), 
               'tasks': task_list,
               'user': current_user}
     self.response.out.write(template.render('views/main.html', values))
-  def post(self):
-    user_list = db.GqlQuery( 'SELECT * FROM User')
-    current_user = users.get_current_user()
-    word=self.request.get('search')
-    task_list = db.GqlQuery('SELECT * FROM Task WHERE title = :1 ORDER BY date', word)
-    values = {'task' : user_list, 
-              'logout_url': users.create_logout_url("/"), 
-              'tasks': task_list,
-              'user': current_user}
-    self.response.out.write(template.render('views/main.html', values))
+

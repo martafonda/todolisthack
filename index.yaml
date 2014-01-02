@@ -17,5 +17,10 @@ indexes:
 
 - kind: Task
   properties:
+  - name: description
+  - name: date
+
+- kind: Task
+  properties:
   - name: title
   - name: date
