@@ -5,10 +5,6 @@ from google.appengine.ext import db
 
 from models.User import User
 
-class UserHandler(webapp2.RequestHandler):
-  def get(self):
-    self.response.out.write("HELLO")
-
 class UserCrud(webapp2.RequestHandler):
   def __init__(self, cid):
         self.cid = cid

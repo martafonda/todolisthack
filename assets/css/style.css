@@ -1,6 +1,11 @@
 .margintop{margin-top: 1em;}
+.margin-top-btn{margin-top: 0.5em;}
 .marginbottom{margin-bottom: 1em;}
 .hdr-mrg-top{margin-top: 6em;}
+.ftr-mrg-bottom{margin-bottom: 6em;}
 .hdr-cnt p{color:white;}
+.title-spn{font-weight: bold;}
 .ftr-cnt p{color:white;}
 .js-edit-tsk{display: none;}
+.margin-loggin{margin-top: 15em;}
+.navbar-loggin{font-size: 2em; color: floralwhite; margin-top: 1em; margin-bottom: 1em; font-weight: bold;}

@@ -3,19 +3,24 @@ import webapp2
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
 from google.appengine.api import mail
+from google.appengine.ext import db
 
 from controllers.UserHandler import UserCrud
+from models.User import User
 
 
 class ProfileHandler(webapp2.RequestHandler):
   def get(self):
     user = users.get_current_user()
-
-    if user:
+    email = user.email()
+    qry = db.GqlQuery("SELECT * FROM User WHERE email = :1", email)
+    user_db = qry.get()
+    
+    if user_db is None:
         values = {'user': user}
         self.response.out.write(template.render('views/profile.html', values))
     else:
-        self.redirect('/login')
+        self.redirect('/')
 
   def post(self):
         user = users.get_current_user()

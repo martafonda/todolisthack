@@ -1,6 +1,7 @@
 {% include 'header.html' %}
 {% include 'header_not_logged.html' %}
-<article class="container hdr-mrg-top">
+<article class="container margin-loggin">
+<div class="col-md-4 col-md-offset-4">
  <form name="profile" class="form-group" action="/profile" method="post" accept-charset="utf-8"
           onsubmit="return validateForm()">
       First Name:&nbsp;<input type="text" class="form-control" name="first_name" value="{{profile.first_name}}" /></br>
@@ -9,6 +10,7 @@
       </select>
       <input type = "submit" class="btn btn-success" value ="Save">
     </form>
+    </div>
 </article>
 
 {% include 'footer.html' %}

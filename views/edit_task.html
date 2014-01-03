@@ -1,5 +1,5 @@
 <article class="margintop">
-  <div class="col-md-4 js-edit-tsk">
+  <div class="col-md-10 js-edit-tsk">
     <form name="new_task" action="/task" class="form-group col-md-7" method="post" accept-charset="utf-8"
           onsubmit="return validateForm()">
       <article class="col-md-12">
@@ -7,8 +7,8 @@
         Description:&nbsp;<input type="text" class="form-control" name="description" value="{{task.description}}" /></br>
         Author:&nbsp;<input type="text" class="form-control" name="author" value={% ifequal task.author none %} {{user.email}} {% else %} {{task.author}} {% endifequal %} /></br>
       </article>
-      <article class="col-md-6 form-group">
-        <p>Date:&nbsp;<input name="date" value="{{task.date}}" type="text" class="input-group date form-control" placeholder="Pick the due date!"><i class="glyphicon glyphicon-calendar"></i></p><br>
+      <article class="col-md-12 form-group">
+        <p>Date:&nbsp;<input name="date" value="{{task.date}}" type="text" class="input-group date form-control" placeholder="Pick the due date!"></p><br>
       </article>
       <input type="hidden" name="done" value="{{task.done}}" />
       

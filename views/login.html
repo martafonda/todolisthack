@@ -1,9 +1,10 @@
 {% include 'header.html' %}
 {% include 'header_not_logged.html' %}
-<section>
-  <h3>Welcome to our TODO List</h3>
-  <h4>Do you have an account?? Please sign in</h4>
-  <p><a href="/sign_up">New User</a></p>
-  <p><a href="{{login_url}}">Google Account Login</a></p>
+<section class="container margin-loggin">
+  <div class="col-md-4 col-md-offset-4 text-center ">
+    <h3>Welcome to our TODO List</h3>
+    <h4>Do you have an account?? Please sign in</h4>
+    <p><a type="button" class="btn btn-primary" href="{{login_url}}">Google Account Login</a></p>
+  </div>
 </section>
 {% include 'footer.html' %}

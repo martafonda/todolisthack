@@ -67,12 +67,11 @@ $(document).ready(function(){
         data: {id: id, title: title, description: description, author: author, done: done, date:parsedDate},
         type: 'post',
         success: function() {
-            parent.find('.js-author').text('by ' + author);
-            parent.find('.js-title').text('title: ' + title);
-            parent.find('.js-description').text('task: ' + description);
+            parent.find('.js-title').text(title);
+            parent.find('.js-description').text(description);
             var formatedDate = new Date(date).toString().split(' ');
             formatedDate = formatedDate[1] + '. ' + formatedDate[2] + ', ' + formatedDate[3];
-            parent.find('.js-date').text('date: ' + formatedDate);
+            parent.find('.js-date').text(formatedDate);
         },
         error: function(xhr, ajaxOptions, thrownError) {
 
