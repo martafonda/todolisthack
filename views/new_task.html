@@ -1,16 +1,17 @@
-<article id="task_{{task.key}}" class="task marginbottom">
-
-    <span class="js-title">title: {{task.title}}</span> <br/>
-    <span class="js-description">task: {{task.description}}</span> <br/>
-    <span class="js-date">date: {{task.date}}</span> <br/>
-
-  <nav>
-    <button type="button" class="btn btn-success btn-xs delete-btn">Delete</button>
-    <button type="button" class="btn btn-success btn-xs edit-btn" >Edit</button>
-    <button type="button" class="btn btn-success btn-xs done-btn glyphicon glyphicon-ok" > </button>
-  </nav>
+<article id="task_{{task.key}}" class="task marginbottom well well-sm">
+<div class="col-md-11 col-sm-11 col-xs-11">
+  <span class="js-title js-task-span title-spn">{{task.title}}</span> <br/>
+  <span class="js-description js-task-span">{{task.description}}</span> <br/>
+  <span class="js-date js-task-span">{{task.date}}</span> <br/>
+</div>
+<nav class="col-md-1 col-sm-1 col-xs-3">
+  <button type="button" class="btn btn-primary btn-xs done-btn glyphicon glyphicon-ok" > </button>
+</nav>
+<nav class="col-md-12">
+  <button type="button" class="btn btn-danger btn-xs delete-btn">Delete</button>
+  <button type="button" class="btn btn-success btn-xs edit-btn" >Edit</button>
+</nav>
   <article class="row">
     {% include 'edit_task.html' %}
   </article>
-  <hr>
 </article>
