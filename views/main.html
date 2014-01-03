@@ -11,7 +11,8 @@
             <span class="icon-bar"></span>
           </button>
           <p class="margintop" >Welcome to your board {{user.email}}
-          <a href="{{logout_url}}">Logout</a></p>
+          <a href="{{logout_url}}">Logout</a>
+          <a type="button" class="btn btn-info" id="home" href="/" >Home</a></p>
         </div>
         <div class="navbar-collapse collapse">
           <form class="navbar-form navbar-right" role="form" name="searchbox" action="/search" method="get" accept-charset="utf-8"
@@ -25,32 +26,52 @@
       </div>
     </header>
 
-<section class="container hdr-mrg-top">
-  <article>
-    <h2>BOARD</h2>
-    {% for task in tasks %}
-      <div id="task">
-        by {{task.author}} <br/>
-        title: {{task.title}} <br/>
-        task: {{task.description}} <br/>
-        <a href="/delete_task">Delete Task</a><br/><br/>
-
-          <article id="edit_task">
-            <form name="new_task" action="/task" method="post" accept-charset="utf-8"
-                  onsubmit="return validateForm()">
-              * Title:&nbsp;<input type="text" name="title" value="{{task.title}}" /></br>
-              * Description:&nbsp;<input type="text" name="description" value="{{task.description}}" /></br>
-              * Author:&nbsp;<input type="text" name="author" value={% ifequal task.author none %} {{user.email}} {% else %} {{task.author}} {% endifequal %} /></br>
-              <input type = "submit" value ="Save">
-            </form>
-          </article>
-      </div>
-    {% endfor %}
+<section class="container hdr-mrg-top show-task">
+  <article class="col-md-9 col-sm-9 col-xs-9">
+    <h2 id="boardTitle">BOARD</h2>
+    {% include 'show_task.html' %}
+    <nav>
+      <a class="btn btn-success btn-xs" type="button" data-toggle="modal" data-target="#myModal">New Task</a>
+    </nav>
   </article>
 
-  <nav>
-    <a href="/new_task">New Task</a>
-  </nav>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="text-center modal-title" id="myModalLabel">Create your todo!</h4>
+        </div>
+
+        <div class="modal-body">
+          <article class="container new-task" role="form">
+            <form name="new_task" class="form-group" action="/task" method="post" accept-charset="utf-8"
+                  onsubmit="return validateForm()">
+              Title:&nbsp;<input type="text" class="form-control" name="title" value="{{task.title}}" /></br>
+              Description:&nbsp;<input type="text" class="form-control" name="description" value="{{task.description}}" /></br>
+              Author:&nbsp;<input type="text" class="form-control" name="author" value={% ifequal task.author none %} {{user.email}} {% else %} {{task.author}} {% endifequal %} /></br>
+              <button type="button" class="btn btn-success btn-xs new-btn">Create</button>
+            </form>
+          </article>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <aside class="col-md-3 col-sm-3 col-xs-3">
+    <div class="sidebar-offcanvas" id="sidebar" role="navigation">
+          <div class="list-group">
+            <a href="/task" class="list-group-item" value="date_order">Order by Date</a>
+            <a href="/task" class="list-group-item" value="date_filter_desc">Filter by Date Desc</a>
+            <a href="/task" class="list-group-item" value="date_filter_asc">Filter by Date Asc</a>
+            <a href="/task" class="list-group-item" value="expired_filter">Filter by State = Expired</a>
+            <a href="/task" class="list-group-item" value="pending_filter">Filter by State = Pending</a>
+            <a href="/task" class="list-group-item" value="done_filter">Filter by State = Done</a>
+          </div>
+        </div>
+  </aside>
+
 </section>
 
 {% include 'footer.html' %}

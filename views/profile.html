@@ -1,8 +1,14 @@
- <form name="profile" action="/profile" method="post" accept-charset="utf-8"
+{% include 'header.html' %}
+{% include 'header_not_logged.html' %}
+<article class="container hdr-mrg-top">
+ <form name="profile" class="form-group" action="/profile" method="post" accept-charset="utf-8"
           onsubmit="return validateForm()">
-      * First Name:&nbsp;<input type="text" name="first_name" value="{{profile.first_name}}" /></br>
-      * Last Name:&nbsp;<input type="text" name="last_name" value="{{profile.last_name}}" /></br>
-      * E-Mail:&nbsp;<input type="text" name="email" value={% ifequal profile.email none %} {{user.email}} {% else %} {{profile.email}} {% endifequal %} /></br>
+      First Name:&nbsp;<input type="text" class="form-control" name="first_name" value="{{profile.first_name}}" /></br>
+      Last Name:&nbsp;<input type="text" class="form-control" name="last_name" value="{{profile.last_name}}" /></br>
+      E-Mail:&nbsp;<input type="text" class="form-control" name="email" value={% ifequal profile.email none %} {{user.email}} {% else %} {{profile.email}} {% endifequal %} /></br>
       </select>
-      <input type = "submit" value ="Save">
+      <input type = "submit" class="btn btn-success" value ="Save">
     </form>
+</article>
+
+{% include 'footer.html' %}

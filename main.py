@@ -40,7 +40,7 @@ class MainHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     webapp2.Route(r'/task', TaskHandler),
     webapp2.Route(r'/new_task', NewTaskHandler),
-    webapp2.Route(r'/delete_task', DeleteTaskHandler),
+    webapp2.Route(r'/delete', DeleteTaskHandler),
     webapp2.Route(r'/search', SearchHandler),
     webapp2.Route(r'/login', LoginHandler, name = 'login'),
     webapp2.Route(r'/sign_up', SignUpHandler),

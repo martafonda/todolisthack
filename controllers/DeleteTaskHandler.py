@@ -7,19 +7,13 @@ from controllers.TaskHandler import TaskCrud
 
 class DeleteTaskHandler(webapp2.RequestHandler):
   def get(self):
-    user = users.get_current_user()
-    if user:
-
-        self.redirect('/')
-    else:
-        self.redirect('/')
+    self.redirect('/')
 
   def post(self):
     user = users.get_current_user()
+    cid  = self.request.get('id')
     crud = TaskCrud(cid)
     if user:
-        crud.delete_task(cid)
-        values = { 'user': user }
-        self.response.out.write(template.render('views/new_task.html', values))
+        crud.delete_task()
     else:
         self.redirect('/')

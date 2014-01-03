@@ -1,0 +1,22 @@
+{% for task in tasks %}
+<article id="task_{{task.key}}" class="task marginbottom">
+{% if task.done %}
+  <strike><span class="js-author js-task-span">by {{task.author}}</span></strike><br/>
+  <strike><span class="js-title js-task-span">title: {{task.title}}</span></strike><br/>
+  <strike><span class="js-description js-task-span">task: {{task.description}}</span></strike><br/>
+{% else %}
+  <span class="js-author js-task-span">by {{task.author}}</span> <br/>
+  <span class="js-title js-task-span">title: {{task.title}}</span> <br/>
+  <span class="js-description js-task-span">task: {{task.description}}</span> <br/>
+{% endif %}
+  <nav>
+    <button type="button" class="btn btn-success btn-xs delete-btn">Delete</button>
+    <button type="button" class="btn btn-success btn-xs edit-btn" >Edit</button>
+    <button type="button" class="btn btn-success btn-xs done-btn glyphicon glyphicon-ok" > </button>
+  </nav>
+  <article class="row">
+    {% include 'edit_task.html' %}
+  </article>
+  <hr>
+</article>
+{% endfor %}

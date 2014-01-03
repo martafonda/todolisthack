@@ -11,9 +11,9 @@ class SearchHandler(webapp2.RequestHandler):
     user_list = db.GqlQuery( 'SELECT * FROM User')
     current_user = users.get_current_user()
     word=self.request.get('search')
-    qtitle = db.GqlQuery('SELECT * FROM Task WHERE title = :1 ORDER BY date', word)
+    qtitle = db.GqlQuery("SELECT * FROM Task WHERE  title>=:1 AND title<:2", word, word+ u"\ufffd")
     task_list_title = list(qtitle)
-    qdescription = db.GqlQuery('SELECT * FROM Task WHERE description = :1 ORDER BY date', word)
+    qdescription = db.GqlQuery("SELECT * FROM Task WHERE description>=:1 AND description<:2", word, word+ u"\ufffd")
     task_list_description = list(qdescription)
     task_list = task_list_title + task_list_description
 

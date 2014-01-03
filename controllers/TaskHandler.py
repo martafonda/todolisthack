@@ -19,41 +19,48 @@ class TaskHandler(webapp2.RequestHandler):
     self.response.out.write(template.render('views/main.html', values))
   
   def post(self):
-    tid = self.request.get('tid')
+    tid = self.request.get('id')
     crud = TaskCrud(tid)
-
-    qry = crud.update_task(author=self.request.get('author'),
+    if tid:
+      qry = crud.update_task(author=self.request.get('author'),
+                title=self.request.get('title'),
+                description = self.request.get('description'),
+                dones = self.request.get('done'))
+    else:
+      qry = crud.new_task(author=self.request.get('author'),
                 title=self.request.get('title'),
                 description = self.request.get('description'))
+      self.response.out.write(template.render('views/new_task.html',qry))
 
-    self.redirect('/')
-    
 class TaskCrud(webapp2.RequestHandler):
   def __init__(self, cid):
         self.cid = cid
 
   def show_task(self):
-        return db.GqlQuery('SELECT * FROM Task WHERE tid = :1',
+        return db.GqlQuery('SELECT * FROM Task WHERE tid= :1',
                            self.cid).get()
+  def new_task(self,author, title, description):
+        new_task = Task(__key__=self.cid,
+                        author=author,
+                        title=title,
+                        description=description,
+                        done=False)
+        new_task.put()
+        values = {'task': new_task}
+        return values
 
-  def update_task(self, author, title, description):
-
-        task = db.GqlQuery('SELECT * FROM Task WHERE tid = :1',
-                              self.cid).get()
-        if not task:
-            new_task = Task(tid=self.cid,
-                            author=author,
-                            title=title,
-                            description=description)
-            new_task.put()
+  def update_task(self, author, title, description, dones):
+        if dones == 'true':
+          done = True
         else:
-            setattr(task, "author", author)
-            setattr(task, "title", title)
-            setattr(task, "description", description)
-            task.put()
-        return("OK")
+          done = False
+        task = db.get(self.cid)
+        setattr(task, "author", author)
+        setattr(task, "title", title)
+        setattr(task, "description", description)
+        setattr(task, "done", done)
+        task.put()
 
   def delete_task(self):
-        task = db.GqlQuery('SELECT * FROM Task WHERE tid = :1',
-                              self.cid).get()
+        task = db.get(self.cid)
         db.delete(task)

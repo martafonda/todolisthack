@@ -14,3 +14,4 @@ class NewTaskHandler(webapp2.RequestHandler):
         self.response.out.write(template.render('views/new_task.html', values))
     else:
         self.redirect('/')
+        

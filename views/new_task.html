@@ -1,7 +1,16 @@
-<form name="new_task" action="/task" method="post" accept-charset="utf-8"
-      onsubmit="return validateForm()">
-  * Title:&nbsp;<input type="text" name="title" value="{{task.title}}" /></br>
-  * Description:&nbsp;<input type="text" name="description" value="{{task.description}}" /></br>
-  * Author:&nbsp;<input type="text" name="author" value={% ifequal task.author none %} {{user.email}} {% else %} {{task.author}} {% endifequal %} /></br>
-  <input type = "submit" value ="Save">
-</form>
+<article id="task_{{task.key}}" class="task marginbottom">
+
+    <span class="js-author">by {{task.author}}</span> <br/>
+    <span class="js-title">title: {{task.title}}</span> <br/>
+    <span class="js-description">task: {{task.description}}</span> <br/>
+
+  <nav>
+    <button type="button" class="btn btn-success btn-xs delete-btn">Delete</button>
+    <button type="button" class="btn btn-success btn-xs edit-btn" >Edit</button>
+    <button type="button" class="btn btn-success btn-xs done-btn glyphicon glyphicon-ok" > </button>
+  </nav>
+  <article class="row">
+    {% include 'edit_task.html' %}
+  </article>
+  <hr>
+</article>

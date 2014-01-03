@@ -1,0 +1,13 @@
+<article class="margintop">
+  <div class="col-md-4 js-edit-tsk">
+    <form name="new_task" action="/task" class="form-group" method="post" accept-charset="utf-8"
+          onsubmit="return validateForm()">
+      Title:&nbsp;<input type="text" class="form-control" name="title" value="{{task.title}}" /></br>
+      Description:&nbsp;<input type="text" class="form-control" name="description" value="{{task.description}}" /></br>
+      Author:&nbsp;<input type="text" class="form-control" name="author" value={% ifequal task.author none %} {{user.email}} {% else %} {{task.author}} {% endifequal %} /></br>
+      <input type="hidden" name="done" value="{{task.done}}" />
+      <input type="hidden" name="date" value="{{task.date}}" />
+      <button type="button" class="btn btn-success btn-xs update-btn">Save</button>
+    </form>
+  </div>
+</article>
