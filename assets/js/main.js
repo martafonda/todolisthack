@@ -35,9 +35,10 @@ $(document).ready(function(){
     var title = parent.find('input[name=title]').val();
     var description = parent.find('input[name=description]').val();
     var author = parent.find('input[name=author]').val();
+    var date = parent.find('input[name=date]').val();
     $.ajax({
       url: '/task',
-      data: {title: title, description: description, author: author},
+      data: {title: title, description: description, author: author, date: date},
       type: 'post',
       success: function(response) {
         $('#myModal').modal('hide');
@@ -58,14 +59,20 @@ $(document).ready(function(){
       var description = parent.find('input[name=description]').val();
       var author = parent.find('input[name=author]').val();
       var done = parent.find('input[name=done]').val();
+      var date = parent.find('input[name=date]').val();
+      var parsedDate = new Date(date);
+      parsedDate = (parsedDate.getMonth() + 1) + '/' + parsedDate.getDate() + '/' + parsedDate.getFullYear();
       $.ajax({
         url: '/task',
-        data: {id: id, title: title, description: description, author: author, done: done},
+        data: {id: id, title: title, description: description, author: author, done: done, date:parsedDate},
         type: 'post',
         success: function() {
             parent.find('.js-author').text('by ' + author);
             parent.find('.js-title').text('title: ' + title);
             parent.find('.js-description').text('task: ' + description);
+            var formatedDate = new Date(date).toString().split(' ');
+            formatedDate = formatedDate[1] + '. ' + formatedDate[2] + ', ' + formatedDate[3];
+            parent.find('.js-date').text('date: ' + formatedDate);
         },
         error: function(xhr, ajaxOptions, thrownError) {
 
@@ -79,7 +86,7 @@ $(document).ready(function(){
       setUpdated($(this));
       $(this).parents('.task:first').find('.js-edit-tsk').toggle();
     });
-  }
+  };
   updateButtonBinds();
 
   function doneButtonBinds() {
@@ -96,10 +103,11 @@ $(document).ready(function(){
       }
       setUpdated($(this));
     });
-  }
+  };
   doneButtonBinds();
 
-  function sortTasks() {
+
+  function sortTasksByDate(asc) {
     var tasks = $('.task');
     tasks = _.sortBy(tasks, function(element){ 
       var value = $(element).find('input[name=date]').val();
@@ -107,11 +115,87 @@ $(document).ready(function(){
       return new Date(value).getTime(); 
     });
     $('#boardTitle').siblings('article').remove();
-    $('#boardTitle').after(tasks.reverse());
+    (asc) ? $('#boardTitle').after(tasks.reverse()) : $('#boardTitle').after(tasks);
+    
     bindEditButton();
     bindDeleteButton();
     updateButtonBinds();
     doneButtonBinds();
+  };
+
+
+  var expiredTask = function(tasksDate, nowDate) {
+    return (tasksDate < nowDate) ? true : false;
+  };
+
+  var pendingTask = function(tasksDate, nowDate) {
+    return (tasksDate > nowDate) ? true : false;
+  };
+
+  function filterTaskByDateState(checkState) {
+    var tasks = $('.task');
+    var nowDate = new Date().getTime();
+    _.each(tasks, function(value, key, list) {
+       var tasksDate = $(value).find('input[name=date]').val();
+       tasksDate = new Date(tasksDate).getTime();
+        if (checkState(tasksDate, nowDate)) {
+          $(value).show();
+        } else {
+          $(value).hide();
+        }
+    }); 
+  };
+
+  function filterTaskByState(){
+    var tasks = $('.task');
+    _.each(tasks, function(value, key, list) {
+      var taskState = $(value).find('input[name=done]').val();
+      (taskState.toLowerCase() == 'true') ? $(value).show() : $(value).hide();
+    });
+  };
+
+  function showAllTasks(){
+    var tasks = $('.task');
+    $(tasks).show();
   }
+  var getDate = function(){
+    date = $('input[name=date_search]').val();
+    return new Date(date).getTime();
+  }
+
+  function searchForDate(date){
+    var tasks = $('.task');
+    _.each(tasks, function(value, key, list) {
+       var tasksDate = $(value).find('input[name=date]').val();
+       tasksDate = new Date(tasksDate).getTime();
+       (tasksDate == date) ? $(value).show() : $(value).hide();
+    });
+  }
+
+  $(".date-search").click(function(){searchForDate(getDate())});
+  $("#expired_filter").click(function(){filterTaskByDateState(expiredTask)});
+  $("#pending_filter").click(function(){filterTaskByDateState(pendingTask)});
+  $("#date_filter_desc").click(function(){sortTasksByDate(true)});
+  $("#date_filter_asc").click(function(){sortTasksByDate(false)});
+  $("#done_filter").click(function(){filterTaskByState()});
+  $("#show_all").click(function(){showAllTasks()});
+  $(".input-group.date").datepicker({ autoclose: true, todayHighlight: true });
+
+
+  $('#searchButton').click(function(event){
+    event.preventDefault();
+    var searchVal = $('input[name=search]').val().toLowerCase();
+    var tasks = $('.task');
+    _.each(tasks, function(value, key, list) {
+      var title = $(value).find('input[name=title]').val().toLowerCase();
+      var description = $(value).find('input[name=description]').val().toLowerCase();
+      if ( (title.indexOf(searchVal) != -1) || (description.indexOf(searchVal) != -1) ) {
+        $(value).show();
+      } else {
+        $(value).hide();
+      }
+    });
+  });
+
 });
 

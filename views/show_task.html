@@ -4,10 +4,12 @@
   <strike><span class="js-author js-task-span">by {{task.author}}</span></strike><br/>
   <strike><span class="js-title js-task-span">title: {{task.title}}</span></strike><br/>
   <strike><span class="js-description js-task-span">task: {{task.description}}</span></strike><br/>
+  <strike><span class="js-date js-task-span">date: {{task.date}}</span></strike></br>
 {% else %}
   <span class="js-author js-task-span">by {{task.author}}</span> <br/>
   <span class="js-title js-task-span">title: {{task.title}}</span> <br/>
   <span class="js-description js-task-span">task: {{task.description}}</span> <br/>
+  <span class="js-date js-task-span">date: {{task.date}}</span> <br/>
 {% endif %}
   <nav>
     <button type="button" class="btn btn-success btn-xs delete-btn">Delete</button>

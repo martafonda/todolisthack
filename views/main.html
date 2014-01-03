@@ -15,12 +15,12 @@
           <a type="button" class="btn btn-info" id="home" href="/" >Home</a></p>
         </div>
         <div class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right" role="form" name="searchbox" action="/search" method="get" accept-charset="utf-8"
+          <form class="navbar-form navbar-right" role="form" name="searchbox" accept-charset="utf-8"
           onsubmit="return validateForm()">
             <div class="form-group">
               <input type="text" placeholder="Introduce your search.." name="search" class="form-control">
             </div>
-            <button type="submit" class="btn btn-success" value="search">Search</button>
+            <button id="searchButton" class="btn btn-success" value="search">Search</button>
           </form>
         </div><!--/.navbar-collapse -->
       </div>
@@ -46,12 +46,20 @@
 
         <div class="modal-body">
           <article class="container new-task" role="form">
-            <form name="new_task" class="form-group" action="/task" method="post" accept-charset="utf-8"
+            <form name="new_task" class="form-group col-md-7" action="/task" method="post" accept-charset="utf-8"
                   onsubmit="return validateForm()">
-              Title:&nbsp;<input type="text" class="form-control" name="title" value="{{task.title}}" /></br>
-              Description:&nbsp;<input type="text" class="form-control" name="description" value="{{task.description}}" /></br>
-              Author:&nbsp;<input type="text" class="form-control" name="author" value={% ifequal task.author none %} {{user.email}} {% else %} {{task.author}} {% endifequal %} /></br>
-              <button type="button" class="btn btn-success btn-xs new-btn">Create</button>
+              <article class="col-md-12">
+                Title:&nbsp;<input type="text" class="form-control" name="title" value="{{task.title}}" /></br>
+                Description:&nbsp;<input type="text" class="form-control" name="description" value="{{task.description}}" /></br>
+                Author:&nbsp;<input type="text" class="form-control" name="author" value={% ifequal task.author none %} {{user.email}} {% else %} {{task.author}} {% endifequal %} /></br>
+              </article>
+              <article class="col-md-6 form-group">
+                <p>Date:&nbsp;<input type="text" name="date" value="{{task.date}}" class="input-group date form-control" placeholder="Pick the due date!"><i class="glyphicon glyphicon-calendar"></i></p><br>
+              </article>
+              <article class="col-md-12 form-group">
+                <button type="button" class="btn btn-success new-btn pull-right">Create</button>
+              </article>
+              
             </form>
           </article>
         </div>
@@ -59,18 +67,26 @@
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
 
+  <aside class="col-md-3 col-sm-3 col-xs-3 form-group">
+
+      <article class="col-md-9 form-group">
+        <input type="text" name="date_search" value="" class="input-group date form-control" placeholder="Search your date"><button class="btn btn-success pull-right date-search">Search Date</button>
+      </article>
+
+  </aside>
   <aside class="col-md-3 col-sm-3 col-xs-3">
     <div class="sidebar-offcanvas" id="sidebar" role="navigation">
-          <div class="list-group">
-            <a href="/task" class="list-group-item" value="date_order">Order by Date</a>
-            <a href="/task" class="list-group-item" value="date_filter_desc">Filter by Date Desc</a>
-            <a href="/task" class="list-group-item" value="date_filter_asc">Filter by Date Asc</a>
-            <a href="/task" class="list-group-item" value="expired_filter">Filter by State = Expired</a>
-            <a href="/task" class="list-group-item" value="pending_filter">Filter by State = Pending</a>
-            <a href="/task" class="list-group-item" value="done_filter">Filter by State = Done</a>
-          </div>
-        </div>
+      <div class="list-group">
+        <a href="#" class="list-group-item" id="show_all">Show All</a>
+        <a href="#" class="list-group-item" id="date_filter_desc">Filter Todos by Date Desc</a>
+        <a href="#" class="list-group-item" id="date_filter_asc">Filter Todos by Date Asc</a>
+        <a href="#" class="list-group-item" id="expired_filter">Filter Expired Todos</a>
+        <a href="#" class="list-group-item" id="pending_filter">Filter Pending Todos</a>
+        <a href="#" class="list-group-item" id="done_filter">Filter by State Done</a>
+      </div>
+    </div>
   </aside>
+
 
 </section>
 
