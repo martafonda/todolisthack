@@ -157,21 +157,19 @@ $(document).ready(function(){
     var tasks = $('.task');
     $(tasks).show();
   }
-  var getDate = function(){
-    date = $('input[name=date_search]').val();
-    return new Date(date).getTime();
-  }
 
-  function searchForDate(date){
+  $("#date-search").click(function(event){
+    event.preventDefault();
+    var date = $('input[name=date_search]').val();
+    var dateParsed = new Date(date).getTime();
     var tasks = $('.task');
     _.each(tasks, function(value, key, list) {
        var tasksDate = $(value).find('input[name=date]').val();
        tasksDate = new Date(tasksDate).getTime();
-       (tasksDate == date) ? $(value).show() : $(value).hide();
+       (tasksDate == dateParsed) ? $(value).show() : $(value).hide();
     });
-  }
-
-  $(".date-search").click(function(){searchForDate(getDate())});
+  });
+  
   $("#expired_filter").click(function(){filterTaskByDateState(expiredTask)});
   $("#pending_filter").click(function(){filterTaskByDateState(pendingTask)});
   $("#date_filter_desc").click(function(){sortTasksByDate(true)});
