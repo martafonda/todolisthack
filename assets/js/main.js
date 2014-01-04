@@ -1,5 +1,6 @@
 $(document).ready(function(){
 
+  //Toggle client-side animation for EDIT div
   function bindEditButton() {
     $('.edit-btn').unbind('click');
     $('.edit-btn').bind('click', function(){
@@ -9,12 +10,13 @@ $(document).ready(function(){
 
   bindEditButton();
 
+  //Delete AJAX method and client-side animation
   function bindDeleteButton() {
     $('.delete-btn').unbind('click');
     $('.delete-btn').bind('click', function(){
-      var parent = $(this).parents('.task:first');
-      var id = parent.attr('id').split('_')[1];
-      $(this).parents('.task:first').remove();
+      var parent = $(this).parents('.task:first');//Select task
+      var id = parent.attr('id').split('_')[1];//Retrieve task id
+      $(this).parents('.task:first').remove();//Remove task
       $.ajax({
         url: '/delete',
         data: {id: id},
@@ -28,8 +30,10 @@ $(document).ready(function(){
       });
     });
   };
+
   bindDeleteButton();
 
+  //New Task AJAX method and clien-side animation
   $('.new-btn').on('click',function(){
     var parent = $(this).parents('.new-task:first');
     var title = parent.find('input[name=title]').val();
@@ -52,9 +56,11 @@ $(document).ready(function(){
     });
   });
 
+  //Method to update task AJAX
   function setUpdated(element){
-      var parent = element.parents('.task:first');
+      var parent = element.parents('.task:first');//Select task
       var id = parent.attr('id').split('_')[1];
+      //Get information from inputs
       var title = parent.find('input[name=title]').val();
       var description = parent.find('input[name=description]').val();
       var author = parent.find('input[name=author]').val();
@@ -80,6 +86,7 @@ $(document).ready(function(){
     
   };
 
+  //Animation and call to method update
   function updateButtonBinds() {
     $('.update-btn').on('click',function(){
       setUpdated($(this));
@@ -88,6 +95,7 @@ $(document).ready(function(){
   };
   updateButtonBinds();
 
+  //Animation and call to change task's done state using update method
   function doneButtonBinds() {
     $('.done-btn').on('click',function(){
       var parent = $(this).parents('.task:first');
@@ -100,12 +108,14 @@ $(document).ready(function(){
         input.val(true);
         parent.find(".js-task-span").wrap("<strike>");
       }
-      setUpdated($(this));
+      setUpdated($(this));//Updating values from DB
     });
   };
   doneButtonBinds();
 
+  //SORT AND FILTER METHODS
 
+  //Sort tasks by date
   function sortTasksByDate(asc) {
     var tasks = $('.task');
     tasks = _.sortBy(tasks, function(element){ 
@@ -122,7 +132,6 @@ $(document).ready(function(){
     doneButtonBinds();
   };
 
-
   var expiredTask = function(tasksDate, nowDate) {
     return (tasksDate < nowDate) ? true : false;
   };
@@ -131,6 +140,7 @@ $(document).ready(function(){
     return (tasksDate > nowDate) ? true : false;
   };
 
+  //Filter tasks by date state: Expired or Pending
   function filterTaskByDateState(checkState) {
     var tasks = $('.task');
     var nowDate = new Date().getTime();
@@ -145,6 +155,7 @@ $(document).ready(function(){
     }); 
   };
 
+  //Filter task by state DONE
   function filterTaskByState(){
     var tasks = $('.task');
     _.each(tasks, function(value, key, list) {
@@ -153,32 +164,7 @@ $(document).ready(function(){
     });
   };
 
-  function showAllTasks(){
-    var tasks = $('.task');
-    $(tasks).show();
-  }
-
-  $("#date-search").click(function(event){
-    event.preventDefault();
-    var date = $('input[name=date_search]').val();
-    var dateParsed = new Date(date).getTime();
-    var tasks = $('.task');
-    _.each(tasks, function(value, key, list) {
-       var tasksDate = $(value).find('input[name=date]').val();
-       tasksDate = new Date(tasksDate).getTime();
-       (tasksDate == dateParsed) ? $(value).show() : $(value).hide();
-    });
-  });
-  
-  $("#expired_filter").click(function(){filterTaskByDateState(expiredTask)});
-  $("#pending_filter").click(function(){filterTaskByDateState(pendingTask)});
-  $("#date_filter_desc").click(function(){sortTasksByDate(true)});
-  $("#date_filter_asc").click(function(){sortTasksByDate(false)});
-  $("#done_filter").click(function(){filterTaskByState()});
-  $("#show_all").click(function(){showAllTasks()});
-  $(".input-group.date").datepicker({ autoclose: true, todayHighlight: true });
-
-
+  //Search a task using title and description
   $('#searchButton').click(function(event){
     event.preventDefault();
     var searchVal = $('input[name=search]').val().toLowerCase();
@@ -193,6 +179,37 @@ $(document).ready(function(){
       }
     });
   });
+
+  //SHOW ALL TASK
+  function showAllTasks(){
+    var tasks = $('.task');
+    $(tasks).show();
+  }
+
+
+  //DATE SEARCH FORM METHODS
+  $("#date-search").click(function(event){
+    event.preventDefault();
+    var date = $('input[name=date_search]').val();
+    var dateParsed = new Date(date).getTime();
+    var tasks = $('.task');
+    _.each(tasks, function(value, key, list) {
+       var tasksDate = $(value).find('input[name=date]').val();
+       tasksDate = new Date(tasksDate).getTime();
+       (tasksDate == dateParsed) ? $(value).show() : $(value).hide();
+    });
+  });
+  
+  //NAVBAR SEARCHES AND FILTERS METHODS CALLS
+  $("#expired_filter").click(function(){filterTaskByDateState(expiredTask)});
+  $("#pending_filter").click(function(){filterTaskByDateState(pendingTask)});
+  $("#date_filter_desc").click(function(){sortTasksByDate(true)});
+  $("#date_filter_asc").click(function(){sortTasksByDate(false)});
+  $("#done_filter").click(function(){filterTaskByState()});
+  $("#show_all").click(function(){showAllTasks()});
+  
+  //Calendar plugin usage
+  $(".input-group.date").datepicker({ autoclose: true, todayHighlight: true });
 
 });
 

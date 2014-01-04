@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # Libraries
 from google.appengine.ext import db
 from google.appengine.api import users
@@ -5,11 +6,14 @@ from google.appengine.ext.webapp import template
 from google.appengine.api import memcache
 import webapp2
 import datetime
+import logging
 
+#Models
 from models.Task import Task
 
 class TaskHandler(webapp2.RequestHandler):
   def get(self):
+    #Searching users in memcache
     user_list = self.get_users()
     current_user = users.get_current_user()
     crud = TaskCrud(self.request.get('id'))
@@ -22,11 +26,11 @@ class TaskHandler(webapp2.RequestHandler):
   
   def get_users(self):
     users = memcache.get("users")
-    if users is not None:
+    if users is not None:                     #If there are users in memcache
       return users
-    else:
-      users = self.retrieve_users()
-      if not memcache.add("users", users, 10):
+    else:                                     #If there aren't users in memcache
+      users = self.retrieve_users()           #Get them from DB
+      if not memcache.add("users", users, 10):#Save them into memcache
           logging.error("Memcache set failed.")
       return users
   
@@ -38,7 +42,7 @@ class TaskHandler(webapp2.RequestHandler):
     crud = TaskCrud(tid)
     date = self.request.get('date')
     date_parsed = datetime.datetime.strptime(date, '%m/%d/%Y').date()
-    if tid:
+    if tid:#If the task already exists
       qry = crud.update_task(author=self.request.get('author'),
                 title=self.request.get('title'),
                 description = self.request.get('description'),

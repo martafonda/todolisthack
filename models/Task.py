@@ -1,6 +1,8 @@
+#!/usr/bin/env python
 # Libraries
 from google.appengine.ext import db
 import webapp2
+
 #  Database Model
 class Task(db.Model):
   author = db.EmailProperty(required=True)

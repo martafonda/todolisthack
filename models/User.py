@@ -1,5 +1,7 @@
+#!/usr/bin/env python
 # Libraries
 from google.appengine.ext import db
+
 #  Database Model
 class User(db.Model):
     uid = db.StringProperty(required=True)

@@ -1,10 +1,11 @@
+#!/usr/bin/env python
 # Libraries
 import webapp2
 from google.appengine.ext.webapp import template
 from google.appengine.api import users
 
+#Models
 from models.Task import Task
-
 
 class NewTaskHandler(webapp2.RequestHandler):
   def get(self):
