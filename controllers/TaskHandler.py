@@ -10,7 +10,7 @@ from models.Task import Task
 
 class TaskHandler(webapp2.RequestHandler):
   def get(self):
-    user_list = db.GqlQuery( 'SELECT * FROM User')
+    user_list = self.get_users()
     current_user = users.get_current_user()
     user_email = current_user.email()
     user_tasks = db.GqlQuery( "SELECT * FROM Task WHERE author = :1 ORDER BY date", user_email)
@@ -20,6 +20,19 @@ class TaskHandler(webapp2.RequestHandler):
               'user': current_user}
     self.response.out.write(template.render('views/main.html', values))
   
+  def get_users(self):
+    users = memcache.get("users")
+    if users is not None:
+      return users
+    else:
+      users = self.retrieve_users()
+      if not memcache.add("users", users, 10):
+          logging.error("Memcache set failed.")
+      return users
+  
+  def retrieve_users(self):
+    return db.GqlQuery( 'SELECT * FROM User')
+
   def post(self):
     tid = self.request.get('id')
     crud = TaskCrud(tid)
