@@ -23,7 +23,7 @@ from google.appengine.ext import db
 
 from controllers.LoginHandler import LoginHandler
 from controllers.ProfileHandler import ProfileHandler
-from controllers.TaskHandler import TaskCrud, TaskHandler
+from controllers.TaskHandler import TaskHandler
 from controllers.DeleteTaskHandler import DeleteTaskHandler
 
 
