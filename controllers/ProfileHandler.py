@@ -4,10 +4,10 @@ from google.appengine.ext.webapp import template
 from google.appengine.api import users
 from google.appengine.api import mail
 from google.appengine.ext import db
-
+#Models
 from models.User import User
 
-
+#Main Profile Handler
 class ProfileHandler(webapp2.RequestHandler):
   def get(self):
     user = users.get_current_user()
@@ -26,10 +26,14 @@ class ProfileHandler(webapp2.RequestHandler):
         uid = user.user_id()
         crud = UserCrud(uid)
 
+        #CRUD usage to save modifications in Users. If user doesn't exist the CRUD
+        #method "update_user" creates new one
         qry = crud.update_user(first_name=self.request.get('first_name'),
                             last_name=self.request.get('last_name'),
                             email=self.request.get('email'))
-
+        if qry != "OK":
+            self.abort(500)
+        #Email sender
         mail.send_mail(sender="Example.com Support <martafondapascual@gmail.com>",
               to= self.request.get('email'),
               subject="Your account has been approved",
@@ -40,6 +44,7 @@ class ProfileHandler(webapp2.RequestHandler):
 
                 The todolisthack.com Team
                 """)
+
         self.redirect('/')
 
 class UserCrud(webapp2.RequestHandler):
@@ -51,11 +56,6 @@ class UserCrud(webapp2.RequestHandler):
                            self.cid).get()
 
   def update_user(self, first_name, last_name, email):
-        #  Validate the input
-        if first_name == None or "":
-            return("first_name")
-        elif last_name == None or "":
-            return("last_name")
 
         user = db.GqlQuery('SELECT * FROM User WHERE uid = :1',
                               self.cid).get()

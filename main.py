@@ -15,6 +15,7 @@
 # limitations under the License.
 #
 import webapp2
+import logging
 
 from google.appengine.api import users
 from google.appengine.ext.webapp import template
@@ -49,3 +50,11 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/profile', ProfileHandler),
     webapp2.Route(r'/', MainHandler)
   ], debug=True)
+
+def handle_500(request, response, exception):
+    logging.exception(exception)
+    values = {}
+    response.out.write(template.render('views/500.html', values))
+    response.set_status(500)
+
+app.error_handlers[500] = handle_500

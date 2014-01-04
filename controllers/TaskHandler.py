@@ -12,8 +12,8 @@ class TaskHandler(webapp2.RequestHandler):
   def get(self):
     user_list = self.get_users()
     current_user = users.get_current_user()
-    user_email = current_user.email()
-    user_tasks = db.GqlQuery( "SELECT * FROM Task WHERE author = :1 ORDER BY date", user_email)
+    crud = TaskCrud(self.request.get('id'))
+    user_tasks = crud.retrieve_tasks()
     values = {'users' : user_list, 
               'logout_url': users.create_logout_url("/"), 
               'tasks': user_tasks,
@@ -51,23 +51,27 @@ class TaskHandler(webapp2.RequestHandler):
                 date = date_parsed)
     self.response.out.write(template.render('views/new_task.html',qry))
 
+
 class TaskCrud(webapp2.RequestHandler):
   def __init__(self, cid):
         self.cid = cid
 
-  def show_task(self):
-        return db.GqlQuery('SELECT * FROM Task WHERE tid= :1',
-                           self.cid).get()
+  def retrieve_tasks(self):
+    current_user = users.get_current_user()
+    user_email = current_user.email()
+    return db.GqlQuery( "SELECT * FROM Task WHERE author = :1 ORDER BY date",
+                         user_email)
+  
   def new_task(self,author, title, description,date):
-        new_task = Task(__key__=self.cid,
-                        author=author,
-                        title=title,
-                        description=description,
-                        done=False,
-                        date=date)
-        new_task.put()
-        values = {'task': new_task}
-        return values
+    new_task = Task(__key__=self.cid,
+                    author=author,
+                    title=title,
+                    description=description,
+                    done=False,
+                    date=date)
+    new_task.put()
+    values = {'task': new_task}
+    return values
 
   def update_task(self, author, title, description, dones,date):
         if dones == 'true':
