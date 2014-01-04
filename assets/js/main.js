@@ -46,12 +46,20 @@ $(document).ready(function(){
       type: 'post',
       success: function(response) {
         $('#myModal').modal('hide');
-        $('.task:last').after(response);
+        var lastTask = $('.task:last');
+        if (lastTask.length) {
+          $('.task:last').after(response);
+        } else {
+          $('#boardTitle').after(response);
+        }
+        var title = parent.find('input[name=title]').val('');
+        parent.find('input[name=description]').val('');
+        parent.find('input[name=date]').val('');
         bindEditButton();
         bindDeleteButton();
       },
       error: function(xhr, ajaxOptions, thrownError) {
-
+        alert("UPSS! You have to fill in all fields!");
       }
     });
   });
